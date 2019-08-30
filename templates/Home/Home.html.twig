@@ -1,0 +1,38 @@
+{# templates/Home/Home2.html.twig #}
+
+{% extends "base.html.twig" %}
+
+{% block title 'Acceuil' %}
+  
+
+
+{% block body %}
+  <div class="jumbotron text-center">
+    <h1>premiere page avec symfony</h1>
+    <p>test de premiere page reussi</p>
+  </div>
+  <div class="container">
+    <h2>les derniers biens</h2>
+    <div class="row flex">
+      {% for house in propreties %}
+        <div class="col-3">
+          <div class="card">
+            <div class="card-body">  
+              <h5 class="card-title">
+                <a href="{{ path ('maison.show', {id: house.id, slug: house.slug}) }}">{{ house.title }}</a>
+              </h5>
+              <p class="card-text">{{ house.city}} ({{ house.postalcode }}) </p>
+              <!-- number_format c'est pour espacer les chiffre mais si on le fait ici on doit le faire
+              partout chaque fois on le veut donc on creer une function pour simplifier
+              <div class="text-primary">{{ house.price | number_format(0, '',' ')}} €</div> -->
+              <div class="text-primary" style="font-weight : bold; font-size:2rem;">
+                {{ house.formattedPrice() }} €
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+  </div>
+{% endblock %}
