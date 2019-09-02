@@ -37,8 +37,8 @@ class MaisonController extends AbstractController
         /*
          * pour injecter les donner dans la bse 
          */
-        // $proprety = new Maisons();
-        // $proprety->setTitle('mon troisieme bien')
+        // $property = new Maisons();
+        // $property->setTitle('mon troisieme bien')
         //     ->setPrice(120000)
         //     ->setRooms(8)
         //     ->setBedrooms(5)
@@ -50,33 +50,33 @@ class MaisonController extends AbstractController
         //     ->setAdresse('23 street boys')
         //     ->setPostalCode('75000');
         // $em = $this->getDoctrine()->getManager();
-        // $em->persist($proprety);
+        // $em->persist($property);
         // $em->flush();
       
 
         /**
          * avant de faire le contructeur on utiliser cette methodes pour appeler le repository
          *  
-         * $proprety = $this->getDoctrine()->getRepository(Maisons::class);
-         * dump($proprety);
+         * $property = $this->getDoctrine()->getRepository(Maisons::class);
+         * dump($property);
          * 
          */
 
         /*
          * Recuperer les lignes de la base de donner -- trouver l'id num un 
          */
-        // $proprety = $this->repository->find(1);
+        // $property = $this->repository->find(1);
 
         /*
          * find all les lignes
          */
-        // $proprety = $this->repository->findAll(); 
+        // $property = $this->repository->findAll(); 
 
         /**
          * find avec parametre avec findOneBy
          */
-        //$proprety = $this->repository->findOneBy(['floor' => 4]);
-        //dump($proprety);
+        //$property = $this->repository->findOneBy(['floor' => 4]);
+        //dump($property);
 
         /*
          * Si on veut retourner toutes les maison non vendu on doit utiliser le findAll mais
@@ -88,12 +88,12 @@ class MaisonController extends AbstractController
           * une fois on a creer notre findAllVisible on l'utilise
           */
         
-        // $proprety = $this->repository->findAllVisible(); // depuis MaisonsRepository
+        // $property = $this->repository->findAllVisible(); // depuis MaisonsRepository
         
         /* le flush va detecter que le sold a ete change a 'true' et il va apporter les modifs 
         * la base de donnee et on doit supprimer le setSold et flush car elle a deja ete changer definitivemnet
         */
-        //$proprety[0]->setSold(true);
+        //$property[0]->setSold(true);
         //$this->em->flush();
 
         return $this->render('Maisons/Maison.html.twig', [
@@ -125,7 +125,7 @@ class MaisonController extends AbstractController
         return $this->render('Maisons/show.html.twig', [
             'controller_name' => 'MaisonController',
             'current_menu' => 'maison',
-            // envoyer les property al a vue
+            // envoyer les property a la vue
             'house' => $property,
         ]);
     }

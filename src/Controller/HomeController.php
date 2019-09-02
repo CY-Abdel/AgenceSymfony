@@ -28,10 +28,10 @@ class HomeController
      */
     public function index(Environment $twig, MaisonsRepository $repository)
     {
-        $proprety = $repository->findLatest();
-        // dump($proprety);
+        $property = $repository->findLatest();
+        // dump($property);
         $content = $twig->render('Home/Home.html.twig', [
-            'propreties' => $proprety
+            'properties' => $property
         ]);
         return new Response($content);
         
