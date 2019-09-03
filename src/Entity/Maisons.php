@@ -4,9 +4,16 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
+/**
+ * name space de validation // use Symfony\Component\Validator\Constraints as Assert;
+ */
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MaisonsRepository")
+ * par exemple me email unique UniqueEntity("email")
+ * @UniqueEntity("title")
  */
 class Maisons
 {
@@ -25,6 +32,7 @@ class Maisons
     private $id;
 
     /**
+     * @Assert\Length(min=5, max=255)
      * @ORM\Column(type="string", length=255)
      */
     private $title;
@@ -36,6 +44,7 @@ class Maisons
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(min=10, max=400)
      */
     private $surface;
 
@@ -75,6 +84,7 @@ class Maisons
     private $adresse;
 
     /**
+     * @Assert\Regex("/^[0-9]{5}$/")
      * @ORM\Column(type="string", length=255)
      */
     private $postal_code;
