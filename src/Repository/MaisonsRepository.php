@@ -7,6 +7,7 @@ use App\Entity\Maisons;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+
 /**
  * @method Maisons|null find($id, $lockMode = null, $lockVersion = null)
  * @method Maisons|null findOneBy(array $criteria, array $orderBy = null)
@@ -22,15 +23,15 @@ class MaisonsRepository extends ServiceEntityRepository
 
     // le ': array' c'est pour le typage mais il renvoi ici un tabl de Maisons
     /**
-     * @return Maisons
+     * @return Query
      */
-    public function findAllVisible() : array
+    public function findAllVisibleQuery()
     {
         // return $this->createQueryBuilder('p')
         // ->andWhere('p.sold = false')
         return $this->findVisibleQuery()
             ->getQuery()
-            ->getResult()
+            // ->getResult()
         ;
     }
 
@@ -43,7 +44,7 @@ class MaisonsRepository extends ServiceEntityRepository
         //     ->where('p.sold = false')
         return $this->findVisibleQuery()
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(8)
+            ->setMaxResults(4)
             ->getQuery()
             ->getResult()
         ;

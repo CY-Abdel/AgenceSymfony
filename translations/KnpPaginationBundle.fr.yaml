@@ -1,0 +1,5 @@
+# pour changer la pagination
+# si elle marche pas il faut vider le cache avec la commande suivante
+# php bin/console cache:clear
+label_next: suivant
+label_previous: précédent

@@ -8,7 +8,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class MaisonController extends AbstractController
 {
@@ -32,8 +33,8 @@ class MaisonController extends AbstractController
     /**
      * @Route("/maison", name="maison")
      */
-    public function maison()
-    {
+    // public function index() : Response
+    // {
         /*
          * pour injecter les donner dans la bse 
          */
@@ -96,9 +97,25 @@ class MaisonController extends AbstractController
         //$property[0]->setSold(true);
         //$this->em->flush();
 
+        // recuperer tt les biens depuis la BDD
+        // $properties = $this->repository->findAllVisible();
+
+    /**
+     * @Route("/maison", name="maison")
+     */
+    public function index(PaginatorInterface $paginator, Request $request) : Response
+    {
+        //faire la pagination ça change comme quit
+        $properties = $paginator->paginate(
+            $this->repository->findAllVisibleQuery(),
+            $request->query->getInt('page', 1), /*page number par default c'est 1 ici*/
+            // 12 /*limit par page 3x4*/
+            9 /*limit par page 3x3*/
+        );
         return $this->render('Maisons/Maison.html.twig', [
             'controller_name' => 'MaisonController',
             'current_menu' => 'maison',
+            'properties' => $properties
         ]);
     }
 
