@@ -15,3 +15,6 @@ maison:
   path: /maison
   controller: App\Controller\MaisonController::maison
 
+logout:
+  path: /logout
+

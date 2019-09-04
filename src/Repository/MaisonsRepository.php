@@ -43,7 +43,7 @@ class MaisonsRepository extends ServiceEntityRepository
         //     ->where('p.sold = false')
         return $this->findVisibleQuery()
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(4)
+            ->setMaxResults(8)
             ->getQuery()
             ->getResult()
         ;
