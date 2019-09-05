@@ -4,9 +4,10 @@ namespace App\Repository;
 
 
 use App\Entity\Maisons;
+use App\Entity\PropertySearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-
+use Doctrine\ORM\Query;
 
 /**
  * @method Maisons|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,14 +26,36 @@ class MaisonsRepository extends ServiceEntityRepository
     /**
      * @return Query
      */
-    public function findAllVisibleQuery()
+    // public function findAllVisibleQuery()
+    public function findAllVisibleQuery(PropertySearch $search) : Query
     {
         // return $this->createQueryBuilder('p')
         // ->andWhere('p.sold = false')
-        return $this->findVisibleQuery()
-            ->getQuery()
-            // ->getResult()
-        ;
+        // return $this->findVisibleQuery()
+        //     ->getQuery()
+        //     // ->getResult()
+
+        // on change la syntaxe pour pouvoir faire la recherche sa devient :
+        $query = $this->findVisibleQuery();
+        //pour fair la recherche on utlise la condition if
+        if($search->getMaxPrice()){
+            $query = $query
+                // ->where('p.price <= :maxprice')
+                /*si on utilise le where le 2eme ecrase la valeur du premier donc on aura une
+                 * erreur pour regler ca on utilisera andWhere il traite chaque condition a part
+                 */
+                ->andWhere('p.price <= :maxprice')
+                ->setParameter('maxprice', $search->getMaxPrice());
+        }
+
+        if($search->getMinSurface()){
+            $query = $query
+                // ->where('p.surface >= :minsurface')
+                ->andWhere('p.surface >= :minsurface')
+                ->setParameter('minsurface', $search->getMinSurface());
+        }
+
+        return $query->getQuery();
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Maisons;
+use App\Entity\PropertySearch;
+use App\Form\PropertySearchType;
 use App\Repository\MaisonsRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -105,17 +107,24 @@ class MaisonController extends AbstractController
      */
     public function index(PaginatorInterface $paginator, Request $request) : Response
     {
+        // Apres la pagination on fais les champs de recherche donc les champs de filtre
+        $search = new PropertySearch();
+        $form = $this->createForm(PropertySearchType::class, $search);
+        //on lui demande de gerer la requete
+        $form->handleRequest($request);
+
         //faire la pagination ça change comme quit
         $properties = $paginator->paginate(
-            $this->repository->findAllVisibleQuery(),
+            $this->repository->findAllVisibleQuery($search),
             $request->query->getInt('page', 1), /*page number par default c'est 1 ici*/
             // 12 /*limit par page 3x4*/
             9 /*limit par page 3x3*/
         );
         return $this->render('Maisons/Maison.html.twig', [
             'controller_name' => 'MaisonController',
-            'current_menu' => 'maison',
-            'properties' => $properties
+            'current_menu'    => 'maison',
+            'properties'      => $properties,
+            'form'            => $form->createView()
         ]);
     }
 
