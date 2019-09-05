@@ -7,13 +7,16 @@
      <div class="container">
         {{ form_start(form) }}
             <div class="form-row align-items-end">
-                <div class="col-md-5">
+                <div class="col-md-3">
                     {{ form_row(form.minSurface) }}
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                     {{ form_row(form.maxPrice) }}
                 </div>
                 <div class="col">
+                    {{ form_row(form.option) }}
+                </div>
+                <div class="col-md-1">
                     <div class="form-group">
                         <button class="btn btn-primary">Rechercher</button>
                     </div>

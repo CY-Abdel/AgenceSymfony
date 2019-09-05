@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_rest(form) }}
+    <button class="btn btn-primary">{{ button|default('Enregistrer') }}</button>
+    <a href="{{ path('option.index') }}" class="btn btn-primary">Retour</a>
+{{ form_end(form) }}

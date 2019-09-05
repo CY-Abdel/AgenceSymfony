@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Maisons;
+use App\Entity\Option;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Form\PropertyType;
 
@@ -74,6 +75,11 @@ class AdminPropertyController extends AbstractController
      */
     public function edit(Maisons $property, Request $request)
     {
+        // ajouter une option a la relation manyTomany aussi simple que ca de meme pr la suppression
+        // nous on creer un crud avec; php bin/console make:crud Option
+        // $option = new Option();
+        // $property->addOption($option);
+
         $form = $this->createForm(PropertyType::class, $property);
         $form->handleRequest($request);
 

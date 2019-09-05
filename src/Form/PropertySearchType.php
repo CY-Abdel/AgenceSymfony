@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Option;
 use App\Entity\PropertySearch;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,12 +22,21 @@ class PropertySearchType extends AbstractType
                     'placeholder' => 'Budget max'
                 ] 
             ])
+
             ->add('minSurface', IntegerType::class, [
                 'required' => false,
                 'label' => false, 
                 'attr' => [
                     'placeholder' => 'Surface minimale'          
                 ]
+            ])
+
+            ->add('option', EntityType::class, [
+                'required' => false,
+                'label' => false, 
+                'class' => Option::class,
+                'choice_label' => 'name',  
+                'multiple' => true         
             ])
             // il faut eviter de mettre le bouton ici sauf si on a plsr boutton
             //dans ce cas la je decoche cette pârtie et j'ajoute le bouton dans le maison.html.twig

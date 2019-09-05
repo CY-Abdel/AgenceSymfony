@@ -5,6 +5,7 @@ namespace App\Repository;
 
 use App\Entity\Maisons;
 use App\Entity\PropertySearch;
+use App\Entity\Option;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
@@ -53,6 +54,18 @@ class MaisonsRepository extends ServiceEntityRepository
                 // ->where('p.surface >= :minsurface')
                 ->andWhere('p.surface >= :minsurface')
                 ->setParameter('minsurface', $search->getMinSurface());
+        }
+
+        if($search->getOption()->count() > 0) // si la somme des options>0 donc il y a des options
+        {
+            $k = 0;
+            foreach ($search->getOption() as $k => $option) 
+            {
+                $k++;   
+                $query = $query
+                    ->andWhere(":option$k MEMBER OF p.options")
+                    ->setParameter("option$k", $option);
+            }
         }
 
         return $query->getQuery();
