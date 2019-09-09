@@ -1,5 +1,14 @@
 <div class="card mb-4">
     <div class="card-body">
+        {% if property.filename %}
+            <!-- <img src="/images/properties/{{ property.filename }}" class="card-img-top" alt="image"> -->
+            <!-- on peut auusi faire avc le VECH comme suit pour le meme resultat -->
+            <img src="{{ vich_uploader_asset(property, 'imageFile') | imagine_filter('thumb') }}" 
+                class="card-img-top" alt="card-img-top" style="width:100%; height:auto;">
+        {% else %}
+             <img src="{{ '/images/properties/MMA_maison-a-vendre.jpg' | imagine_filter('thumb') }}"  
+                class="card-img-top" alt="image">
+        {% endif %}
         <h5 class="card-title">
             <a href="{{ path('maison.show', {slug: property.slug, id:property.id}) }}">
                 {{ property.title}}

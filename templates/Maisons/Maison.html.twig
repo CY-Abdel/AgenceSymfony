@@ -28,12 +28,11 @@
     <div class="container">
         <h1 class="text-center">Bienvenu dans notre site de vente</h1>
         <h2>Voir toutes nos maisons</h2>
-
         <div class="row">
             {% for property in properties %}
                 <div class="col-md-4">
                     {% include 'Maisons/_property.html.twig' %}
-                </div>
+                </div>            
             {% endfor %} 
         </div>
         <div class="pagination justify-content-center">

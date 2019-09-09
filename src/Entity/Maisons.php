@@ -11,12 +11,17 @@ use Cocur\Slugify\Slugify;
  */
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+// pour 'limage a la une (10/16) on doit coller
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MaisonsRepository")
- * par exemple me email unique UniqueEntity("email")
  * @UniqueEntity("title")
+ * @Vich\Uploadable
  */
+//par exemple me email unique UniqueEntity("email")
 class Maisons
 {
 
@@ -32,6 +37,21 @@ class Maisons
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=255)
+     */
+    private $filename;
+
+    /**
+     * @var File|null
+     * @Assert\Image(
+     *      mimeTypes="image/jpeg"
+     * )
+     * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
+     */
+    private $imageFile;
 
     /**
      * @Assert\Length(min=5, max=255)
@@ -105,6 +125,11 @@ class Maisons
      * @ORM\ManyToMany(targetEntity="App\Entity\Option", inversedBy="properties")
      */
     private $options;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated_at;
 
     public function __construct(){
         $this->created_at = new \DateTime();
@@ -298,7 +323,7 @@ class Maisons
     /**
      * @return Collection|Option[]
      */
-    public function getOption(): Collection
+    public function getOptions(): Collection
     {
         return $this->options;
     }
@@ -322,4 +347,57 @@ class Maisons
 
         return $this;
     }
+
+    /**
+     * @return null|string
+     */
+    public function getFilename(): ?string 
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param null|string $filename
+     * @return Maisons
+     */
+    public function setFilename(?string $filename): Maisons
+    {
+        $this->filename = $filename;
+        return $this;
+    }
+
+    /**
+     * @return null|File
+     */
+    public function getImageFile(): ?File 
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param null|File $imageFile
+     * @return Maisons
+     */
+    public function setImageFile(?File $imageFile): Maisons
+    {
+        $this->imageFile = $imageFile;
+        if ($this->imageFile instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
+        }
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+
 }
