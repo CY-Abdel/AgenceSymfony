@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
+use App\Notification\ContactNotification;
 use App\Entity\Maisons;
 use App\Entity\PropertySearch;
+use App\Form\ContactType;
 use App\Form\PropertySearchType;
 use App\Repository\MaisonsRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -133,8 +136,8 @@ class MaisonController extends AbstractController
      * @Route("/maison/{slug}-{id}", name="maison.show", requirements={"slug" : "[a-z0-9\-]*"})
      */
     // public function show($slug, $id) : Response
-    public function show(Maisons $property, string $slug) : Response
-    {
+    public function show(Maisons $property, string $slug, Request $request, ContactNotification $notification) : Response
+    {   
         /**
          * si on fait pas les parametres slug et id et on fait maisons $property a la place
          * on peut supprimer la ligne de      find($id)
@@ -148,11 +151,28 @@ class MaisonController extends AbstractController
                 'slug' => $property->getSlug(),
             ], 301);
         }
+
+        $contact = new Contact();
+        $contact->setProperty($property);
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            // on notify la personne et on gere son message
+            $notification->notify($contact);
+            $this->addFlash('success', 'Votre email a bien été envoyé');
+            return $this->redirectToRoute('maison.show', [
+                'id' => $property->getId(),
+                'slug' => $property->getSlug()
+            ]);
+        }
+
         return $this->render('Maisons/show.html.twig', [
             'controller_name' => 'MaisonController',
-            'current_menu' => 'maison',
+            'current_menu'    => 'maison',
             // envoyer les property a la vue
-            'house' => $property,
+            'house'           => $property,
+            'form'            => $form->createView()
         ]);
     }
 }

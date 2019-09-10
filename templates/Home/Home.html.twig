@@ -17,7 +17,16 @@
       {% for house in properties %}
         <div class="col-3">
           <div class="card">
-            <div class="card-body">  
+            <div class="card-body">
+              {% if house.filename %}
+                <!-- <img src="/images/properties/{{ house.filename }}" class="card-img-top" alt="image"> -->
+                <!-- on peut auusi faire avc le VECH comme suit pour le meme resultat -->
+                <img src="{{ vich_uploader_asset(house, 'imageFile') | imagine_filter('thumb') }}" 
+                    class="card-img-top" alt="card-img-top" style="width:100%; height:auto;">
+              {% else %}
+                <img src="{{ '/images/properties/MMA_maison-a-vendre.jpg' | imagine_filter('thumb') }}"  
+                    class="card-img-top" alt="image">
+              {% endif %}  
               <h5 class="card-title">
                 <a href="{{ path ('maison.show', {id: house.id, slug: house.slug}) }}">{{ house.title }}</a>
               </h5>

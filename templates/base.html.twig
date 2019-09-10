@@ -6,7 +6,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css">   
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+        {% endblock %}
     </head>
     
     <body>
@@ -27,8 +28,16 @@
                 {% if app.user %}
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                        <button type="button" class="btn btn-success" disabled>Profil : Admin</button>
-                        <a href="{{ path('logout') }}" class="btn btn-primary">Se déconnecter</a>
+                            <div class="btn-group btn-group-item-action">
+                                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Profil : Admin</button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ path('admin.index') }}" class="dropdown-item clearfix">admin.index</a></li>
+                                    <li><a href="{{ path('option.index') }}" class="dropdown-item" style="">option.index</a></li>
+                                </ul>
+                            </div>
+                            <!-- <a href="{{ path('admin.index') }}" class="btn btn-success dropbtn"> Profil : Admin</a> -->
+                            <!-- <button type="button" class="btn btn-success" disabled>Profil : Admin</button> -->
+                            <a href="{{ path('logout') }}" class="btn btn-primary">Se déconnecter</a>
                         </li>
                     </ul>
                 {% else %}
@@ -53,6 +62,26 @@
         <script>
             $('select').select2();
         </script>    
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script>
+                // affiche le dropdown while mouse hover
+                $(".dropdown-toggle").on("mouseenter", function () {
+                    // make sure it is not shown:
+                    if (!$(this).parent().hasClass("show")) {
+                        $(this).click();
+                    }
+                });
+            </script>
+
+            <script>
+                // ferme le dropdown while mouse not hovering the button
+                $(".btn-group, .dropdown").on("mouseleave", function () {
+                    // make sure it is shown:
+                    if ($(this).hasClass("show")){
+                        $(this).children('.dropdown-toggle').first().click();
+                    }
+                });
+            </script>
+        {% endblock %}
     </body>
 </html>
